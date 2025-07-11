@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Админка Mini Market</title>
+  <style>
+    body { font-family: sans-serif; max-width: 400px; margin: 40px auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
+    input, textarea { width: 100%; margin-top: 10px; padding: 10px; font-size: 15px; border-radius: 6px; border: 1px solid #ccc; }
+    button { margin-top: 20px; padding: 10px; width: 100%; background: #ffa726; color: white; border: none; font-weight: bold; border-radius: 8px; }
+  </style>
+</head>
+<body>
+
+  <h2>Добавить товар</h2>
+
+  <form id="form">
+    <input type="text" id="name" placeholder="Название товара" required>
+    <textarea id="description" placeholder="Описание товара"></textarea>
+    <input type="number" id="price" placeholder="Цена в ₸" required>
+    <input type="url" id="image" placeholder="Ссылка на изображение товара" required>
+    <button type="submit">Добавить</button>
+  </form>
+
+  <script>
+    document.getElementById('form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const description = document.getElementById('description').value.trim();
+      const price = parseFloat(document.getElementById('price').value.trim());
+      const image = document.getElementById('image').value.trim();
+
+      if (!name || !price || !image) {
+        alert("Пожалуйста, заполните все обязательные поля.");
+        return;
+      }
+
+      const res = await fetch('https://script.google.com/macros/s/AKfycbynKOs8wW1lpQOSNWvfzA_fnIxeNdFaobQdLHpk0CS3kwr6wFzSOTCZcj5CnVT7GqOj/exec', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, description, price, image })
+      });
+
+      if (res.ok) {
+        alert("✅ Товар добавлен!");
+        document.getElementById('form').reset();
+      } else {
+        alert("❌ Ошибка при добавлении.");
+      }
+    });
+  </script>
+
+</body>
+</html>
